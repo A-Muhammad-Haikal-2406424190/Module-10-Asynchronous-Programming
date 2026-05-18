@@ -186,3 +186,31 @@ Perubahan kreatif yang ditambahkan pada client Yew:
 ![1](tutorial-webchat-yew/assets/1.png)
 ![1](tutorial-webchat-yew/assets/2.png)
 ![1](tutorial-webchat-yew/assets/3.png)
+
+## Bonus: Change the websocket server
+
+Tujuan bonus:
+- Mengganti server JavaScript pada Tutorial 3 dengan server Rust dari Tutorial 2, supaya webclient Yew tetap bisa dipakai.
+
+Perubahan inti:
+- File yang diubah: `tutorial-broadcast-chat/src/bin/server.rs`
+- Menambahkan dependency serialisasi JSON di `tutorial-broadcast-chat/Cargo.toml`:
+  - `serde`
+  - `serde_json`
+- Server Rust sekarang mengikuti format pesan yang sama dengan Yew client:
+  - `register`: simpan username user baru
+  - `users`: broadcast daftar user aktif (`dataArray`)
+  - `message`: broadcast pesan chat (`data`) berisi JSON string:
+    - `from`
+    - `message`
+    - `time`
+
+Kenapa ini berhasil:
+- Client Yew di Tutorial 3 mengirim/menerima data sebagai text websocket, dan isi text-nya berupa JSON.
+- Setelah server Rust memakai envelope JSON yang sama (`messageType`, `data`, `dataArray`), parsing di sisi client Yew langsung kompatibel tanpa ubah protokol transport.
+
+
+Opini (JavaScript vs Rust server):
+- JavaScript server lebih cepat untuk prototyping awal.
+- Rust server lebih kuat untuk reliability dan type-safety format data saat protokol berkembang.
+- Untuk jangka panjang saya lebih prefer Rust server karena kontrak data lebih ketat dan error runtime lebih terkontrol.
