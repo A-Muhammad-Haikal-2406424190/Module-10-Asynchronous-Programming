@@ -176,3 +176,37 @@ Penjelasan:
 - Informasi pengirim diambil dari `SocketAddr` koneksi client di server.
 - Setiap kali server menerima pesan, server menambahkan `IP:port` pengirim sebelum broadcast.
 - Dengan format ini, semua client bisa membedakan asal setiap pesan tanpa fitur username.
+
+## 3.1 Original code (WebChat using Yew)
+
+Project tutorial 3 ada di folder:
+- `tutorial-webchat-yew/simple-websocket-server`
+- `tutorial-webchat-yew/yewchat-client`
+
+Source mengikuti referensi blog + repo aslinya (server websocket Node + client Yew).
+
+Penyesuaian kompatibilitas yang diperlukan:
+- Versi `wasm-bindgen`, `web-sys`, dan `wasm-bindgen-futures` di client dinaikkan supaya bisa build di toolchain Rust terbaru.
+- `webpack.config.js` disesuaikan agar output wasm cocok dengan import `bootstrap.js`.
+
+Cara run (contoh port yang bebas bentrok):
+
+1) Terminal server:
+```bash
+cd tutorial-webchat-yew/simple-websocket-server
+PORT=18080 npm start
+```
+
+2) Terminal client:
+```bash
+cd tutorial-webchat-yew/yewchat-client
+wasm-pack build --target web --out-name index --out-dir pkg -- --features wee_alloc
+PORT=18003 npm start
+```
+
+3) Buka browser:
+- `http://localhost:18003/?ws=127.0.0.1:18080`
+
+Hasil verifikasi di environment ini:
+- `simple-websocket-server`: sukses start (listening pada port custom).
+- `yewchat-client`: sukses compile (`webpack compiled successfully`) pada port custom.

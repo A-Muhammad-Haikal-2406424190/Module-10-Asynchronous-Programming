@@ -1,3 +1,8 @@
 /target
 /tutorial-timer/target
 /tutorial-broadcast-chat/target
+/tutorial-webchat-yew/simple-websocket-server/node_modules
+/tutorial-webchat-yew/yewchat-client/node_modules
+/tutorial-webchat-yew/yewchat-client/target
+/tutorial-webchat-yew/yewchat-client/pkg
+/tutorial-webchat-yew/yewchat-client/dist
