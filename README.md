@@ -1,5 +1,5 @@
 # Module 9 - Asynchronous Programming
-`
+
 
 ## 1.1 Original timer from the book
 
@@ -77,23 +77,7 @@ Penjelasan efek spawn/spawner/executor/drop:
 
 ## 2.1 Original code of broadcast chat
 
-Project dikerjakan di folder `tutorial-broadcast-chat/` dengan dua binary:
-- `src/bin/server.rs`
-- `src/bin/client.rs`
 
-Cara menjalankan:
-
-```bash
-cd tutorial-broadcast-chat
-cargo run --bin server
-```
-
-Buka 3 terminal lain untuk client:
-
-```bash
-cd tutorial-broadcast-chat
-cargo run --bin client
-```
 
 Hasil pengujian (1 server + 3 client):
 
@@ -173,33 +157,9 @@ Penjelasan:
 
 ## 3.1 Original code (WebChat using Yew)
 
-Project tutorial 3 ada di folder:
-- `tutorial-webchat-yew/simple-websocket-server`
-- `tutorial-webchat-yew/yewchat-client`
+![1](tutorial-webchat-yew/assets/4.png)
+![1](tutorial-webchat-yew/assets/5.png)
 
-Source mengikuti referensi blog + repo aslinya (server websocket Node + client Yew).
-
-Penyesuaian kompatibilitas yang diperlukan:
-- Versi `wasm-bindgen`, `web-sys`, dan `wasm-bindgen-futures` di client dinaikkan supaya bisa build di toolchain Rust terbaru.
-- `webpack.config.js` disesuaikan agar output wasm cocok dengan import `bootstrap.js`.
-
-Cara run (contoh port yang bebas bentrok):
-
-1) Terminal server:
-```bash
-cd tutorial-webchat-yew/simple-websocket-server
-PORT=18080 npm start
-```
-
-2) Terminal client:
-```bash
-cd tutorial-webchat-yew/yewchat-client
-wasm-pack build --target web --out-name index --out-dir pkg -- --features wee_alloc
-PORT=18003 npm start
-```
-
-3) Buka browser:
-- `http://localhost:18003/?ws=127.0.0.1:18080`
 
 Hasil verifikasi di environment ini:
 - `simple-websocket-server`: sukses start (listening pada port custom).
@@ -223,9 +183,6 @@ Perubahan kreatif yang ditambahkan pada client Yew:
 - Membuat websocket endpoint di client lebih fleksibel lewat query param:
   - `?ws=127.0.0.1:18080`
 
-File utama yang diubah:
-- `tutorial-webchat-yew/yewchat-client/src/lib.rs`
-- `tutorial-webchat-yew/yewchat-client/src/components/login.rs`
-- `tutorial-webchat-yew/yewchat-client/src/components/chat.rs`
-- `tutorial-webchat-yew/yewchat-client/src/components/about.rs` (baru)
-- `tutorial-webchat-yew/yewchat-client/src/services/websocket.rs`
+![1](tutorial-webchat-yew/assets/1.png)
+![1](tutorial-webchat-yew/assets/2.png)
+![1](tutorial-webchat-yew/assets/3.png)
