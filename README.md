@@ -76,3 +76,68 @@ Penjelasan efek spawn/spawner/executor/drop:
 - `executor` mengambil task dari queue dan mem-poll sampai selesai.
 - `drop(spawner)` menutup jalur pengiriman task baru; setelah queue habis, `executor.run()` bisa berhenti.
 - Jika `drop(spawner)` tidak dipanggil, queue receiver terus menunggu task baru sehingga program terlihat "hang".
+
+## 2.1 Original code of broadcast chat
+
+Project dikerjakan di folder `chat-async/` dengan dua binary:
+- `src/bin/server.rs`
+- `src/bin/client.rs`
+
+Cara menjalankan:
+
+```bash
+cd chat-async
+cargo run --bin server
+```
+
+Buka 3 terminal lain untuk client:
+
+```bash
+cd chat-async
+cargo run --bin client
+```
+
+Hasil pengujian (1 server + 3 client):
+
+```text
+Server:
+listening on port 2000
+New connection from 127.0.0.1:52932
+New connection from 127.0.0.1:52948
+New connection from 127.0.0.1:52952
+From client 127.0.0.1:52932: halo dari client1
+From client 127.0.0.1:52948: halo dari client2
+From client 127.0.0.1:52952: halo dari client3
+```
+
+```text
+Client 1:
+From server: Welcome to chat! Type a message
+halo dari client1
+From server: halo dari client1
+From server: halo dari client2
+From server: halo dari client3
+```
+
+```text
+Client 2:
+From server: Welcome to chat! Type a message
+From server: halo dari client1
+halo dari client2
+From server: halo dari client2
+From server: halo dari client3
+```
+
+```text
+Client 3:
+From server: Welcome to chat! Type a message
+From server: halo dari client1
+From server: halo dari client2
+halo dari client3
+From server: halo dari client3
+```
+
+Penjelasan:
+- Setiap pesan client dikirim ke server lewat websocket `ws://127.0.0.1:2000`.
+- Server broadcast pesan ke semua client yang terhubung.
+- Client pengirim juga menerima pesan broadcast-nya sendiri.
