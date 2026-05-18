@@ -22,6 +22,8 @@ Perubahan yang dilakukan:
 
 Hasil `cargo run`:
 
+![1](assets/1.png)
+
 ```text
 Muhammad Haikal's Komputer: hey hey!
 Muhammad Haikal's Komputer: howdy!
@@ -41,6 +43,8 @@ Perubahan yang dilakukan:
 - Masing-masing task mencetak `howdy1/2/3` lalu `done1/2/3` setelah timer 2 detik.
 
 Hasil `cargo run` (dengan `drop(spawner)`):
+
+![2](assets/2.png)
 
 ```text
 Muhammad Haikal's Komputer: hey hey!
