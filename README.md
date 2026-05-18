@@ -1,5 +1,9 @@
 # Module 9 - Asynchronous Programming
 
+Struktur repo:
+- `tutorial-timer/`
+- `tutorial-broadcast-chat/`
+
 ## 1.1 Original timer from the book
 
 Perubahan yang dilakukan:
@@ -22,7 +26,7 @@ Perubahan yang dilakukan:
 
 Hasil `cargo run`:
 
-![1](assets/1.png)
+![1](tutorial-timer/assets/1.png)
 
 ```text
 Muhammad Haikal's Komputer: hey hey!
@@ -44,7 +48,7 @@ Perubahan yang dilakukan:
 
 Hasil `cargo run` (dengan `drop(spawner)`):
 
-![2](assets/2.png)
+![2](tutorial-timer/assets/2.png)
 
 ```text
 Muhammad Haikal's Komputer: hey hey!
@@ -79,21 +83,21 @@ Penjelasan efek spawn/spawner/executor/drop:
 
 ## 2.1 Original code of broadcast chat
 
-Project dikerjakan di folder `chat-async/` dengan dua binary:
+Project dikerjakan di folder `tutorial-broadcast-chat/` dengan dua binary:
 - `src/bin/server.rs`
 - `src/bin/client.rs`
 
 Cara menjalankan:
 
 ```bash
-cd chat-async
+cd tutorial-broadcast-chat
 cargo run --bin server
 ```
 
 Buka 3 terminal lain untuk client:
 
 ```bash
-cd chat-async
+cd tutorial-broadcast-chat
 cargo run --bin client
 ```
 
@@ -145,8 +149,8 @@ Penjelasan:
 ## 2.2 Modifying the websocket port
 
 Perubahan:
-- `chat-async/src/bin/server.rs`: bind dari `127.0.0.1:2000` menjadi `127.0.0.1:8080`.
-- `chat-async/src/bin/client.rs`: URI websocket dari `ws://127.0.0.1:2000` menjadi `ws://127.0.0.1:8080`.
+- `tutorial-broadcast-chat/src/bin/server.rs`: bind dari `127.0.0.1:2000` menjadi `127.0.0.1:8080`.
+- `tutorial-broadcast-chat/src/bin/client.rs`: URI websocket dari `ws://127.0.0.1:2000` menjadi `ws://127.0.0.1:8080`.
 
 Hasil pengujian:
 
