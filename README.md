@@ -141,3 +141,30 @@ Penjelasan:
 - Setiap pesan client dikirim ke server lewat websocket `ws://127.0.0.1:2000`.
 - Server broadcast pesan ke semua client yang terhubung.
 - Client pengirim juga menerima pesan broadcast-nya sendiri.
+
+## 2.2 Modifying the websocket port
+
+Perubahan:
+- `chat-async/src/bin/server.rs`: bind dari `127.0.0.1:2000` menjadi `127.0.0.1:8080`.
+- `chat-async/src/bin/client.rs`: URI websocket dari `ws://127.0.0.1:2000` menjadi `ws://127.0.0.1:8080`.
+
+Hasil pengujian:
+
+```text
+Server:
+listening on port 8080
+New connection from 127.0.0.1:45544
+From client 127.0.0.1:45544: test 8080
+```
+
+```text
+Client:
+From server: Welcome to chat! Type a message
+test 8080
+From server: test 8080
+```
+
+Penjelasan protocol:
+- Protocol websocket tetap `ws`.
+- Definisinya ada di URI client: `ws://127.0.0.1:8080`.
+- Sisi server tidak menuliskan `ws://`, tapi tetap websocket karena koneksi dibungkus oleh `ServerBuilder::new().accept(socket)`.
