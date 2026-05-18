@@ -168,3 +168,44 @@ Penjelasan protocol:
 - Protocol websocket tetap `ws`.
 - Definisinya ada di URI client: `ws://127.0.0.1:8080`.
 - Sisi server tidak menuliskan `ws://`, tapi tetap websocket karena koneksi dibungkus oleh `ServerBuilder::new().accept(socket)`.
+
+## 2.3 Small changes, add some information to client
+
+Perubahan:
+- Server sekarang broadcast dengan format `IP:port: pesan` agar penerima tahu asal pesan.
+- Client mengubah tampilan output menjadi:
+  `Muhammad Haikal's Komputer - From server: ...`
+
+Contoh hasil:
+
+```text
+Client 1:
+Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
+hi
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
+```
+
+```text
+Client 2:
+Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
+hallo
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
+```
+
+```text
+Client 3:
+Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
+tes dari client3
+Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
+```
+
+Penjelasan:
+- Informasi pengirim diambil dari `SocketAddr` koneksi client di server.
+- Setiap kali server menerima pesan, server menambahkan `IP:port` pengirim sebelum broadcast.
+- Dengan format ini, semua client bisa membedakan asal setiap pesan tanpa fitur username.
