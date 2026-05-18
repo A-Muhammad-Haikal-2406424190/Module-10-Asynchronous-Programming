@@ -123,6 +123,8 @@ fn main() {
         println!("Muhammad Haikal's Komputer: done!");
     });
 
+    println!("Muhammad Haikal's Komputer: hey hey!");
+
     drop(spawner);
     executor.run();
 }
