@@ -103,44 +103,22 @@ cargo run --bin client
 
 Hasil pengujian (1 server + 3 client):
 
-```text
-Server:
-listening on port 2000
-New connection from 127.0.0.1:52932
-New connection from 127.0.0.1:52948
-New connection from 127.0.0.1:52952
-From client 127.0.0.1:52932: halo dari client1
-From client 127.0.0.1:52948: halo dari client2
-From client 127.0.0.1:52952: halo dari client3
-```
-
-```text
 Client 1:
-From server: Welcome to chat! Type a message
-halo dari client1
-From server: halo dari client1
-From server: halo dari client2
-From server: halo dari client3
-```
 
-```text
+![1](tutorial-broadcast-chat/assets/1.png)
+
 Client 2:
-From server: Welcome to chat! Type a message
-From server: halo dari client1
-halo dari client2
-From server: halo dari client2
-From server: halo dari client3
-```
 
-```text
+![1](tutorial-broadcast-chat/assets/2.png)
+
 Client 3:
-From server: Welcome to chat! Type a message
-From server: halo dari client1
-From server: halo dari client2
-halo dari client3
-From server: halo dari client3
-```
 
+
+![1](tutorial-broadcast-chat/assets/3.png)
+
+Server:
+
+![1](tutorial-broadcast-chat/assets/4.png)
 Penjelasan:
 - Setiap pesan client dikirim ke server lewat websocket `ws://127.0.0.1:2000`.
 - Server broadcast pesan ke semua client yang terhubung.
@@ -182,32 +160,17 @@ Perubahan:
 
 Contoh hasil:
 
-```text
 Client 1:
-Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
-hi
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
-```
 
-```text
+![1](tutorial-broadcast-chat/assets/5.png)
+
 Client 2:
-Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
-hallo
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
-```
 
-```text
-Client 3:
-Muhammad Haikal's Komputer - From server: Welcome to chat! Type a message
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41974: hi
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41968: hallo
-tes dari client3
-Muhammad Haikal's Komputer - From server: 127.0.0.1:41990: tes dari client3
-```
+![1](tutorial-broadcast-chat/assets/6.png)
+
+Server:
+
+![1](tutorial-broadcast-chat/assets/7.png)
 
 Penjelasan:
 - Informasi pengirim diambil dari `SocketAddr` koneksi client di server.
