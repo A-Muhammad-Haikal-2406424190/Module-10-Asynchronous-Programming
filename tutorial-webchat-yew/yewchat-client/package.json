@@ -4,8 +4,9 @@
     "description": "",
     "main": "bootstrap.js",
     "scripts": {
-        "build": "rimraf dist pkg && webpack",
-        "start": "rimraf dist pkg && webpack-dev-server --open -d eval",
+        "build:wasm": "wasm-pack build --target web --out-name index --out-dir pkg -- --features wee_alloc",
+        "build": "npm run build:wasm && rimraf dist && webpack",
+        "start": "npm run build:wasm && rimraf dist && webpack-dev-server --open -d eval",
         "test": "cargo test && wasm-pack test --headless"
     },
     "keywords": [],

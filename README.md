@@ -1,14 +1,8 @@
 # Module 9 - Asynchronous Programming
-
-Struktur repo:
-- `tutorial-timer/`
-- `tutorial-broadcast-chat/`
+`
 
 ## 1.1 Original timer from the book
 
-Perubahan yang dilakukan:
-- Mengadopsi kode executor + timer dari Async Book.
-- Mengganti teks output dari `Ade's Komputer` menjadi `Muhammad Haikal's Komputer`.
 
 Hasil `cargo run`:
 
@@ -222,9 +216,9 @@ Perubahan kreatif yang ditambahkan pada client Yew:
   - jumlah message saat ini
   - tombol `Clear` untuk membersihkan message lokal
 - Menambah quick-message buttons:
-  - `👋 Hello`
-  - `⚙️ Rust`
-  - `🎞️ GIF`
+  - `Hello`
+  - `Rust`
+  - `GIF`
 - Menambah fallback avatar agar UI tidak panic ketika user pengirim belum terpetakan.
 - Membuat websocket endpoint di client lebih fleksibel lewat query param:
   - `?ws=127.0.0.1:18080`
