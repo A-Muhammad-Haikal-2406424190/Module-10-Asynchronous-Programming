@@ -12,7 +12,15 @@ pub struct WebsocketService {
 
 impl WebsocketService {
     pub fn new() -> Self {
-        let ws = WebSocket::open("ws://127.0.0.1:8080").unwrap();
+        let ws_url = web_sys::window()
+            .and_then(|w| w.location().search().ok())
+            .and_then(|s| {
+                s.strip_prefix("?ws=")
+                    .map(|v| format!("ws://{}", v.replace("%3A", ":").replace("%2F", "/")))
+            })
+            .unwrap_or_else(|| "ws://127.0.0.1:8080".to_string());
+
+        let ws = WebSocket::open(&ws_url).unwrap();
 
         let (mut write, mut read) = ws.split();
 
@@ -30,7 +38,7 @@ impl WebsocketService {
             while let Some(msg) = read.next().await {
                 match msg {
                     Ok(Message::Text(data)) => {
-                        log::debug!("from websocket: {}", data);
+                        log::debug!("from websocket({}): {}", ws_url, data);
                         event_bus.send(Request::EventBusMsg(data));
                     }
                     Ok(Message::Bytes(b)) => {

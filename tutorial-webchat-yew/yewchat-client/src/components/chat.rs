@@ -1,14 +1,17 @@
 use serde::{Deserialize, Serialize};
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
+use yew_router::prelude::*;
 use yew_agent::{Bridge, Bridged};
 
 use crate::services::event_bus::EventBus;
-use crate::{services::websocket::WebsocketService, User};
+use crate::{services::websocket::WebsocketService, Route, User};
 
 pub enum Msg {
     HandleMsg(String),
     SubmitMessage,
+    QuickFill(String),
+    ClearMessages,
 }
 
 #[derive(Deserialize)]
@@ -45,6 +48,7 @@ pub struct Chat {
     _producer: Box<dyn Bridge<EventBus>>,
     wss: WebsocketService,
     messages: Vec<MessageData>,
+    current_user: String,
 }
 impl Component for Chat {
     type Message = Msg;
@@ -78,6 +82,7 @@ impl Component for Chat {
             chat_input: NodeRef::default(),
             wss,
             _producer: EventBus::bridge(ctx.link().callback(Msg::HandleMsg)),
+            current_user: username,
         }
     }
 
@@ -132,16 +137,44 @@ impl Component for Chat {
                 };
                 false
             }
+            Msg::QuickFill(value) => {
+                if let Some(input) = self.chat_input.cast::<HtmlInputElement>() {
+                    let current_value = input.value();
+                    if current_value.is_empty() {
+                        input.set_value(&value);
+                    } else {
+                        input.set_value(&format!("{current_value} {value}"));
+                    }
+                }
+                false
+            }
+            Msg::ClearMessages => {
+                self.messages.clear();
+                true
+            }
         }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         let submit = ctx.link().callback(|_| Msg::SubmitMessage);
+        let clear_messages = ctx.link().callback(|_| Msg::ClearMessages);
+        let quick_hello = ctx
+            .link()
+            .callback(|_| Msg::QuickFill("Hello everyone 👋".to_string()));
+        let quick_rust = ctx
+            .link()
+            .callback(|_| Msg::QuickFill("Learning async Rust ⚙️".to_string()));
+        let quick_gif = ctx
+            .link()
+            .callback(|_| Msg::QuickFill("https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif".to_string()));
 
         html! {
             <div class="flex w-screen">
                 <div class="flex-none w-56 h-screen bg-gray-100">
                     <div class="text-xl p-3">{"Users"}</div>
+                    <div class="px-3 pb-3 text-xs text-gray-600">
+                        {format!("Online: {}", self.users.len())}
+                    </div>
                     {
                         self.users.clone().iter().map(|u| {
                             html!{
@@ -163,14 +196,27 @@ impl Component for Chat {
                     }
                 </div>
                 <div class="grow h-screen flex flex-col">
-                    <div class="w-full h-14 border-b-2 border-gray-300"><div class="text-xl p-3">{"💬 Chat!"}</div></div>
+                    <div class="w-full h-14 border-b-2 border-gray-300 flex justify-between items-center px-3">
+                        <div class="text-xl">{"💬 Chat!"}</div>
+                        <div class="flex items-center gap-2">
+                            <div class="text-xs bg-violet-100 text-violet-700 px-2 py-1 rounded">{format!("You: {}", self.current_user)}</div>
+                            <div class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">{format!("Messages: {}", self.messages.len())}</div>
+                            <Link<Route> to={Route::About}>
+                                <button class="text-xs px-2 py-1 rounded bg-slate-800 text-white">{"About"}</button>
+                            </Link<Route>>
+                            <button onclick={clear_messages} class="text-xs px-2 py-1 rounded bg-red-500 text-white">{"Clear"}</button>
+                        </div>
+                    </div>
                     <div class="w-full grow overflow-auto border-b-2 border-gray-300">
                         {
                             self.messages.iter().map(|m| {
-                                let user = self.users.iter().find(|u| u.name == m.from).unwrap();
+                                let user = self.users.iter().find(|u| u.name == m.from);
+                                let avatar = user
+                                    .map(|u| u.avatar.clone())
+                                    .unwrap_or_else(|| "https://avatars.dicebear.com/api/adventurer-neutral/unknown.svg".to_string());
                                 html!{
                                     <div class="flex items-end w-3/6 bg-gray-100 m-8 rounded-tl-lg rounded-tr-lg rounded-br-lg ">
-                                        <img class="w-8 h-8 rounded-full m-3" src={user.avatar.clone()} alt="avatar"/>
+                                        <img class="w-8 h-8 rounded-full m-3" src={avatar} alt="avatar"/>
                                         <div class="p-3">
                                             <div class="text-sm">
                                                 {m.from.clone()}
@@ -188,6 +234,11 @@ impl Component for Chat {
                             }).collect::<Html>()
                         }
 
+                    </div>
+                    <div class="w-full border-b border-gray-300 px-4 py-2 flex gap-2">
+                        <button onclick={quick_hello} class="text-xs px-3 py-1 rounded-full bg-blue-100 text-blue-700">{"👋 Hello"}</button>
+                        <button onclick={quick_rust} class="text-xs px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">{"⚙️ Rust"}</button>
+                        <button onclick={quick_gif} class="text-xs px-3 py-1 rounded-full bg-amber-100 text-amber-700">{"🎞️ GIF"}</button>
                     </div>
                     <div class="w-full h-14 flex px-3 items-center">
                         <input ref={self.chat_input.clone()} type="text" placeholder="Message" class="block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-full outline-none focus:text-gray-700" name="message" required=true />

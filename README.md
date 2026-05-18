@@ -210,3 +210,28 @@ PORT=18003 npm start
 Hasil verifikasi di environment ini:
 - `simple-websocket-server`: sukses start (listening pada port custom).
 - `yewchat-client`: sukses compile (`webpack compiled successfully`) pada port custom.
+
+## 3.2 Add some creativities to the webclient
+
+Perubahan kreatif yang ditambahkan pada client Yew:
+- Menambah halaman baru `About` (`/about`) berisi ringkasan fitur dan eksplorasi.
+- Menambah tombol akses `See Creative Notes` pada halaman login.
+- Menambah panel info di halaman chat:
+  - username aktif
+  - jumlah user online
+  - jumlah message saat ini
+  - tombol `Clear` untuk membersihkan message lokal
+- Menambah quick-message buttons:
+  - `👋 Hello`
+  - `⚙️ Rust`
+  - `🎞️ GIF`
+- Menambah fallback avatar agar UI tidak panic ketika user pengirim belum terpetakan.
+- Membuat websocket endpoint di client lebih fleksibel lewat query param:
+  - `?ws=127.0.0.1:18080`
+
+File utama yang diubah:
+- `tutorial-webchat-yew/yewchat-client/src/lib.rs`
+- `tutorial-webchat-yew/yewchat-client/src/components/login.rs`
+- `tutorial-webchat-yew/yewchat-client/src/components/chat.rs`
+- `tutorial-webchat-yew/yewchat-client/src/components/about.rs` (baru)
+- `tutorial-webchat-yew/yewchat-client/src/services/websocket.rs`
